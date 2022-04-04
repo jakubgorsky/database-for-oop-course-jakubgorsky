@@ -17,6 +17,7 @@ struct db_record {
     std::string surname;
     int index_number;
     std::string email;
+    std::string role;
 };
 
 class DatabaseReader {
@@ -25,7 +26,7 @@ private:
     std::vector<db_record> DB;
     int max_id{};
     void read_database(const std::string& filename);
-    void write_db(std::string filename);
+    void write_db(const std::string& filename);
 public:
     DatabaseReader(){
         read_database(db_file);
@@ -34,7 +35,7 @@ public:
     std::vector<db_record> get_all_students();
     db_record get_student(int id);
     void delete_student(int id);
-    void add_student(std::string name, std::string surname, int index_number, std::string email);;
+    void add_student(std::string name, std::string surname, int index_number, std::string email, std::string role);
 };
 
 

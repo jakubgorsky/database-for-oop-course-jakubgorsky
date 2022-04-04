@@ -4,6 +4,7 @@
 
 #include "DatabaseReader.h"
 #include "HelperMethods.h"
+#include "colours.h"
 
 void DatabaseReader::read_database(const std::string& filename) {
 
@@ -22,27 +23,29 @@ void DatabaseReader::read_database(const std::string& filename) {
         temp.surname = values[2];
         temp.index_number = std::stoi(values[3]);
         temp.email = values[4];
+        temp.role = values[5];
         DB.emplace_back(temp);
         max_id = std::stoi(values[0]);
     }
 }
 
-void DatabaseReader::write_db(std::string filename) {
+void DatabaseReader::write_db(const std::string& filename) {
     std::ofstream ClearDB(filename, std::ofstream::out | std::ofstream::trunc);
     ClearDB.close();
     std::ofstream WriteDatabaseFile(filename, std::ios_base::app);
     for (const auto& i : DB){
-        WriteDatabaseFile << i.id << "," << i.name << "," << i.surname << "," << i.index_number << "," << i.email << "\n";
+        WriteDatabaseFile << i.id << "," << i.name << "," << i.surname << "," << i.index_number << "," << i.email << "," << i.role << "\n";
     }
     WriteDatabaseFile.close();
 }
 
 void DatabaseReader::print_header() {
-    std::cout << left("ID:", 5)
+    std::cout << GREEN << left("ID:", 5)
     << left("Name:",20)
     << left("Surname:",20)
     << left("In. number:",15)
-    << left("Email:", 50) << "\n";
+    << left("Role:",25)
+    << left("Email:", 50) << RESET << "\n";
 }
 
 std::vector<db_record> DatabaseReader::get_all_students() {
@@ -76,12 +79,13 @@ void DatabaseReader::delete_student(int id) {
 }
 
 
-void DatabaseReader::add_student(std::string name, std::string surname, int index_number, std::string email) {
+void DatabaseReader::add_student(std::string name, std::string surname, int index_number, std::string email, std::string role) {
     db_record student;
     student.id = max_id + 1;
     student.name = name;
     student.surname = surname;
     student.index_number = index_number;
+    student.role = role;
     student.email = email;
     DB.push_back(student);
     write_db(db_file);
